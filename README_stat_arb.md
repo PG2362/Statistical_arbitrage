@@ -6,18 +6,6 @@ This project implements and evaluates a pairs trading strategy on liquid US larg
 
 Pairs trading is premised on cointegration: two price series whose linear combination, the spread `Price_A − β·Price_B`, is stationary and mean-reverting. When the spread deviates significantly from its historical mean, the strategy takes a market-neutral position betting on reversion, shorting the relatively overpriced leg and buying the relatively underpriced leg. The implementation follows the standard methodology: the Engle-Granger test for cointegration, ordinary least squares regression for the hedge ratio β, and a 30-day rolling z-score of the spread as the trading signal. Positions are entered when |z| exceeds 2.0, exited when z returns to 0, and stopped out when |z| exceeds 3.5, with equal dollar amounts allocated to each leg.
 
-## Repository Contents
-
-| File | Description |
-|---|---|
-| `pairs_trading_01_basics.py` | Single-pair analysis: price retrieval, cointegration testing, spread and z-score visualization |
-| `pairs_trading_02_backtest.py` | Backtesting engine with train/test separation, execution lag, and transaction costs |
-| `pairs_trading_03_screener.py` | Universe screening for cointegration and half-life of mean reversion |
-| `pairs_trading_04_pipeline.py` | End-to-end pipeline: screening on training data, pair selection, out-of-sample backtest |
-| `pairs_trading_05_portfolio.py` | Portfolio construction across all surviving pairs with diversification diagnostics |
-
-Dependencies: `pip install yfinance pandas numpy statsmodels matplotlib`. Configuration parameters are located at the top of each script.
-
 ## Methodology and Bias Controls
 
 A primary design consideration was the elimination of look-ahead bias, as the most common backtesting errors inflate results rather than producing visible failures. The following controls were implemented.
